@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { ethers } from "ethers";
 
+
 const CONTRACT_ADDRESS = "SOLIDITY CONTRACT";
 
 const CONTRACT_ABI = [
@@ -103,6 +104,20 @@ export default function App() {
   const [balanceEth, setBalanceEth] = useState<string>("0");
   const [depositAmount, setDepositAmount] = useState<string>(""); 
   const [withdrawAmount, setWithdrawAmount] = useState<string>(""); 
+  const [isDark, setIsDark] = useState(false);
+
+  const toggleTheme = () => {
+    const html = document.documentElement;
+    if (html.classList.contains("dark")) {
+      html.classList.remove("dark");
+      setIsDark(false);
+    } else {
+      html.classList.add("dark");
+      setIsDark(true);
+    }
+    console.log("Переключено на:", isDark ? "светлую" : "темную");
+  };
+
 
 
   const provider = useMemo(() => {
@@ -229,26 +244,32 @@ export default function App() {
       {!account ? (
         <button 
         onClick={() => connectWallet()}
-        className="bg-blue-600 text-white py-3 px-6 rounded-xl shadow hover:bg-blue-700 transition disabled:opacity-50 w-full max-w-xs"
+        className="bg-blue-600 dark:text-white text-black py-3 px-6 rounded-xl shadow hover:bg-blue-700 transition disabled:opacity-50 w-full max-w-xs"
         >
         ConnectWallet
         </button>
         ) : (
       <>
-      <div className="text-white text-center text-[50px] select-none">{balanceEth}</div>
-      <button onClick={getBalance} className="text-white text-center text-[50px] select-none">update</button>
+      <div className="dark:text-white text-black text-center text-[50px] select-none">{balanceEth}</div>
+      <img
+        onClick={toggleTheme}
+        src={isDark ? "/Sun.svg" : "/Moon.svg"}
+        className="w-6 h-6 lg:w-8 lg:h-8 cursor-pointer"
+        alt={isDark ? "Moon icon" : "Sun icon"}
+        />
+      <button onClick={getBalance} className="dark:text-white text-black text-center text-[50px] select-none">update</button>
 
-      <div className="gap-10 center text-white justify-items-center">
+      <div className="gap-10 center dark:text-white text-black justify-items-center">
         <button onClick={() => setIsDepositMenuOpen(!isDepositMenuOpen)} className="rounded-md hidden lg:w-[500px] lg:h-[100px] bg-[#1D1B6D] flex items-center justify-center text-center m-2">Deposit</button>
         <button onClick={() => setIsWithdrawMenuOpen(!isWithdrawMenuOpen)} className="rounded-md hidden lg:w-[500px] lg:h-[100px] bg-[#6D1B1B] flex items-center justify-center text-center m-2">Withdraw</button>
       </div>
 
-      <div className="gap-10 center text-white justify-items-center">
+      <div className="gap-10 center dark:text-white text-black justify-items-center">
         <button onClick={() => setIsDepositMenuOpen(!isDepositMenuOpen)} className="rounded-md w-[350px] h-[100px] bg-[#1D1B6D] flex items-center justify-center text-center m-2">Deposit</button>
         <button onClick={() => setIsWithdrawMenuOpen(!isWithdrawMenuOpen)} className="rounded-md w-[350px] h-[100px] bg-[#6D1B1B] flex items-center justify-center text-center m-2">Withdraw</button>
       </div>
 
-       <div className="gap-10 center text-white justify-items-center">
+       <div className="gap-10 center dark:text-white text-black justify-items-center">
         <button onClick={() => setIsDepositMenuOpen(!isDepositMenuOpen)} className="rounded-md hidden md:w-[400px] h-[100px] bg-[#1D1B6D] flex items-center justify-center text-center m-2">Deposit</button>
         <button onClick={() => setIsWithdrawMenuOpen(!isWithdrawMenuOpen)} className="rounded-md hidden md:w-[400px] h-[100px] bg-[#6D1B1B] flex items-center justify-center text-center m-2">Withdraw</button>
       </div>
@@ -256,10 +277,10 @@ export default function App() {
       {isDepositMenuOpen && (
         <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">
          <div className="relative space-y-4 rounded-md w-[350px] h-[150px] bg-[#1D1B6D] flex flex-col items-center justify-center">
-          <button onClick={() => setIsDepositMenuOpen(false)} className="absolute top-1 right-4 text-white text-xl font-bold">x</button>
-          <div className="text-white">Deposit Menu</div>
-          <input onChange={(e) => setDepositAmount(e.target.value)} className="bg-black rounded text-white focus:outline-none focus:border-blue-500 "></input>
-          <button onClick={depositBalance} className="rounded-md w-[150px] h-[50px] bg-[#104110] text-white font-semibold">Deposit</button>
+          <button onClick={() => setIsDepositMenuOpen(false)} className="absolute top-1 right-4 dark:text-white text-black text-xl font-bold">x</button>
+          <div className="dark:text-white text-black">Deposit Menu</div>
+          <input onChange={(e) => setDepositAmount(e.target.value)} className="bg-black rounded dark:text-white text-black focus:outline-none focus:border-blue-500 "></input>
+          <button onClick={depositBalance} className="rounded-md w-[150px] h-[50px] bg-[#104110] dark:text-white text-black font-semibold">Deposit</button>
          </div>
         </div>
         )}
@@ -267,10 +288,10 @@ export default function App() {
         {isWithdrawMenuOpen && (
         <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">
          <div className="relative space-y-4 rounded-md w-[350px] h-[150px] bg-[#1D1B6D] flex flex-col items-center justify-center">
-          <button onClick={() => setIsWithdrawMenuOpen(false)} className="absolute top-1 right-4 text-white text-xl font-bold">x</button>
-          <div className="text-white">Withdraw Menu</div>
-          <input onChange={(e) => setWithdrawAmount(e.target.value)} className="bg-black rounded text-white focus:outline-none focus:border-blue-500 "></input>
-          <button onClick={withdrawBalance} className="rounded-md w-[150px] h-[50px] bg-[#6D1B1B] text-white font-semibold">Withdraw</button>
+          <button onClick={() => setIsWithdrawMenuOpen(false)} className="absolute top-1 right-4 dark:text-white text-black text-xl font-bold">x</button>
+          <div className="dark:text-white text-black">Withdraw Menu</div>
+          <input onChange={(e) => setWithdrawAmount(e.target.value)} className="bg-black rounded dark:text-white text-black focus:outline-none focus:border-blue-500 "></input>
+          <button onClick={withdrawBalance} className="rounded-md w-[150px] h-[50px] bg-[#6D1B1B] dark:text-white text-black font-semibold">Withdraw</button>
          </div>
         </div>
         )}
